@@ -5,11 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
+using System.Threading;
 
 namespace 扫雷_精简版
 {
     public enum 方格状态 { 未知,打开,标记,爆炸,疑问 }
-    class 方格:Button
+    class 方格 : Button
     {
         public static int 宽 = 36;
         public static int 高 = 36;
@@ -92,73 +93,76 @@ namespace 扫雷_精简版
             {
                 foreach (Object control in this.Parent.Controls)
                 {
-                    方格 _方格 = (方格)control;
-                    if (_方格.外观 == 方格状态.未知 || _方格.外观 == 方格状态.疑问)
+                    if (control is 方格)
                     {
-                        try
+                        方格 _方格 = (方格)control;
+                        if (_方格.外观 == 方格状态.未知 || _方格.外观 == 方格状态.疑问)
                         {
-                            if (_方格.横坐标 + 1 == this.横坐标 && _方格.纵坐标 + 1 == this.纵坐标)
+                            try
                             {
-                                _方格.外观 = 方格状态.打开;
+                                if (_方格.横坐标 + 1 == this.横坐标 && _方格.纵坐标 + 1 == this.纵坐标)
+                                {
+                                    _方格.外观 = 方格状态.打开;
+                                }
                             }
-                        }
-                        catch { }
-                        try
-                        {
-                            if (_方格.横坐标 == this.横坐标 && _方格.纵坐标 + 1 == this.纵坐标)
+                            catch { }
+                            try
                             {
-                                _方格.外观 = 方格状态.打开;
+                                if (_方格.横坐标 == this.横坐标 && _方格.纵坐标 + 1 == this.纵坐标)
+                                {
+                                    _方格.外观 = 方格状态.打开;
+                                }
                             }
-                        }
-                        catch { }
-                        try
-                        {
-                            if (_方格.横坐标 - 1 == this.横坐标 && _方格.纵坐标 + 1 == this.纵坐标)
+                            catch { }
+                            try
                             {
-                                _方格.外观 = 方格状态.打开;
+                                if (_方格.横坐标 - 1 == this.横坐标 && _方格.纵坐标 + 1 == this.纵坐标)
+                                {
+                                    _方格.外观 = 方格状态.打开;
+                                }
                             }
-                        }
-                        catch { }
-                        try
-                        {
-                            if (_方格.横坐标 + 1 == this.横坐标 && _方格.纵坐标 == this.纵坐标)
+                            catch { }
+                            try
                             {
-                                _方格.外观 = 方格状态.打开;
+                                if (_方格.横坐标 + 1 == this.横坐标 && _方格.纵坐标 == this.纵坐标)
+                                {
+                                    _方格.外观 = 方格状态.打开;
+                                }
                             }
-                        }
-                        catch { }
-                        try
-                        {
-                            if (_方格.横坐标 - 1 == this.横坐标 && _方格.纵坐标 == this.纵坐标)
+                            catch { }
+                            try
                             {
-                                _方格.外观 = 方格状态.打开;
+                                if (_方格.横坐标 - 1 == this.横坐标 && _方格.纵坐标 == this.纵坐标)
+                                {
+                                    _方格.外观 = 方格状态.打开;
+                                }
                             }
-                        }
-                        catch { }
-                        try
-                        {
-                            if (_方格.横坐标 + 1 == this.横坐标 && _方格.纵坐标 - 1 == this.纵坐标)
+                            catch { }
+                            try
                             {
-                                _方格.外观 = 方格状态.打开;
+                                if (_方格.横坐标 + 1 == this.横坐标 && _方格.纵坐标 - 1 == this.纵坐标)
+                                {
+                                    _方格.外观 = 方格状态.打开;
+                                }
                             }
-                        }
-                        catch { }
-                        try
-                        {
-                            if (_方格.横坐标 == this.横坐标 && _方格.纵坐标 - 1 == this.纵坐标)
+                            catch { }
+                            try
                             {
-                                _方格.外观 = 方格状态.打开;
+                                if (_方格.横坐标 == this.横坐标 && _方格.纵坐标 - 1 == this.纵坐标)
+                                {
+                                    _方格.外观 = 方格状态.打开;
+                                }
                             }
-                        }
-                        catch { }
-                        try
-                        {
-                            if (_方格.横坐标 - 1 == this.横坐标 && _方格.纵坐标 - 1 == this.纵坐标)
+                            catch { }
+                            try
                             {
-                                _方格.外观 = 方格状态.打开;
+                                if (_方格.横坐标 - 1 == this.横坐标 && _方格.纵坐标 - 1 == this.纵坐标)
+                                {
+                                    _方格.外观 = 方格状态.打开;
+                                }
                             }
+                            catch { }
                         }
-                        catch { }
                     }
                 }
             }
@@ -183,10 +187,14 @@ namespace 扫雷_精简版
 
         void 初始化()
         {
-            this.Size = new Size((方格.宽 + 方格间隔) * 方格列数 - 方格间隔, (方格.宽 + 方格间隔) * 方格列数 - 方格间隔);
+            this.Size = new Size((方格.宽 + 方格间隔) * 方格列数 - 方格间隔, (方格.宽 + 方格间隔) * 方格列数 - 方格间隔 + 140);//加上下面重玩按钮和显示信息的140高度
+            this.Location = new Point(40,40);//雷场位置
             生成方格();
             随机布雷();
             判断周围雷数量();
+            重玩按钮();
+            显示剩余地雷数量();
+            显示地雷图片();
         }
 
         /// <summary>
@@ -211,7 +219,6 @@ namespace 扫雷_精简版
         /// <summary>
         /// try catch 判断周围类数量
         /// </summary>
-        #region
         void 判断周围雷数量()
         {
             for (int i = 0; i < 方格列数; i++)
@@ -288,7 +295,6 @@ namespace 扫雷_精简版
                 }
             }
         }
-        #endregion
         void 生成方格()
         {
             for (int i = 0; i < 方格列数; i++)
@@ -330,11 +336,13 @@ namespace 扫雷_精简版
                             {
                                 fg.外观 = 方格状态.标记;
                                 标记数量--;
+                                更改剩余地雷数量();
                             }
                             else if (fg.外观 == 方格状态.标记)
                             {
                                 fg.外观 = 方格状态.疑问;
                                 标记数量++;
+                                更改剩余地雷数量();
                             }
                             
                         }
@@ -344,6 +352,7 @@ namespace 扫雷_精简版
                             {
                                 fg.外观 = 方格状态.疑问;
                                 标记数量++;
+                                更改剩余地雷数量();
                             }
                         }
                     }
@@ -354,13 +363,17 @@ namespace 扫雷_精简版
         {
             if (bomb.是不是地雷 == true)
             {
-                foreach (方格 control in this.Controls)
+                try
                 {
-                    if (control.是不是地雷 == true)
+                    foreach (方格 control in this.Controls)
                     {
-                        control.外观 = 方格状态.爆炸;
+                        if (control.是不是地雷 == true)
+                        {
+                            control.外观 = 方格状态.爆炸;
+                        }
                     }
                 }
+                catch (Exception) { ;}
                 游戏能不能继续 = false;
                 bomb.BackgroundImage = Image.FromFile("Images\\主动爆炸.jpg");
                 打开数量 = -1;  //最后一个打开是雷时，不判断赢
@@ -370,13 +383,141 @@ namespace 扫雷_精简版
         /// <summary>
         /// 根据打开数量判断是否胜利
         /// </summary>
-        public void 判断赢()
+        void 判断赢()
         {
             if (打开数量 == (方格列数 * 方格行数) - 地雷数量)
             {
                 游戏能不能继续 = false;
                 MessageBox.Show("You Win!!!游戏结束");
             }
+        }
+        void 重新这一局()
+        {
+            初始化变量();
+            foreach (Object control in this.Controls)
+            {
+                if (control is 方格)
+                {
+                    方格 fg = (方格)control;
+                    fg.外观 = 方格状态.未知;
+                }
+            }
+            更改剩余地雷数量();
+        }
+        void 新开下一局()
+        {
+            初始化变量();
+            foreach (Object control in this.Controls)
+            {
+                if (control is 方格)
+                {
+                    方格 fg = (方格)control;
+                    fg.外观 = 方格状态.未知;
+                    fg.是不是地雷 = false;
+                    fg.周围雷数量 = 0;
+                }
+            }
+            随机布雷();
+            判断周围雷数量();
+            更改剩余地雷数量();
+        }
+        void 初始化变量()
+        {
+            游戏能不能继续 = true;
+            标记数量 = 15;
+            打开数量 = 0;
+        }
+        void 重玩按钮()
+        {
+            重玩按钮 cw = new 重玩按钮();
+            cw.MouseDown += 重玩点击事件;
+            this.Controls.Add(cw);
+        }
+        void 重玩点击事件(object sender, MouseEventArgs e)
+        {
+            switch (e.Button)
+            {
+                case MouseButtons.Left:
+                    重新这一局();
+                    break;
+                case MouseButtons.Right:
+                    新开下一局();
+                    break;
+                default:
+                    break;
+            }
+        }
+        void 显示剩余地雷数量()
+        {
+            显示信息 xs = new 显示信息();
+            xs.Text = 标记数量.ToString();
+            xs.Location = new Point(85, 467);
+            this.Controls.Add(xs);
+        }
+        void 更改剩余地雷数量()
+        {
+            foreach (Object control in this.Controls)
+            {
+                if (control is 显示信息)
+                {
+                    显示信息 sy = (显示信息)control;
+                    if (标记数量 < 10)
+                    {
+                        sy.Text = "0" + 标记数量;
+                    }
+                    else
+                    {
+                        sy.Text = 标记数量.ToString();
+                    }
+                }
+            }
+        }
+        void 显示地雷图片()
+        {
+            地雷图片 dlImg = new 地雷图片();
+            this.Controls.Add(dlImg);
+        }
+    }
+
+    class 重玩按钮 : Button
+    {
+        public 重玩按钮()
+        {
+            初始化外观();
+        }
+        void 初始化外观()
+        {
+            this.Size = new Size(170,40);
+            this.BackColor = Color.Red;
+            this.Font = new Font("黑体", 12);
+            this.Text = "左键重新这一局，右键下一局";
+            this.Location = new Point(100,400);
+        }
+    }
+    class 显示信息 : Label
+    {
+        public 显示信息()
+        {
+            初始化();
+        }
+        void 初始化()
+        {
+            this.Size = new Size(40,25);
+            this.Font = new Font("黑体", 20);
+            this.BackColor = Color.Red;
+        }
+    }
+    class 地雷图片 : PictureBox
+    {
+        public 地雷图片()
+        {
+            初始化();
+        }
+        void 初始化()
+        {
+            this.Image = 扫雷_精简版.Properties.Resources.地雷图标;
+            this.Size = new Size(54,54);
+            this.Location = new Point(20,450);
         }
     }
 }
